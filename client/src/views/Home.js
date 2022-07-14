@@ -5,7 +5,7 @@ import UserCard from "../components/UserCard";
 import SearchInput from "../components/SearchInput";
 import Loading from "../components/Loading";
 import { groupByDate } from "../helpers/groupByDate";
-import Select from "../components/Select";
+import Filter from "../components/Filter";
 import { MdOutlineCancel } from "react-icons/md";
 import { GrFormClose } from "react-icons/gr";
 import debounce from "lodash.debounce";
@@ -103,14 +103,14 @@ const Home = () => {
         <div style={{ padding: "2rem 10%" }}>
           <SearchInput handleSearch={handleSearch} />
           <div style={selectDivStyles}>
-            <Select
+            <Filter
               onChange={(e) => {
                 setFilter((prev) => ({ ...prev, age: e.target.value }));
               }}
               data={ageOptions}
               label="age"
             />
-            <Select
+            <Filter
               onChange={(e) => {
                 setFilter((prev) => ({ ...prev, height: e.target.value }));
               }}
