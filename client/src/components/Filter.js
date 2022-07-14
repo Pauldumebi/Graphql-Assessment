@@ -4,7 +4,8 @@ const Select = ({ onChange, data, label }) => {
   return (
     <div style={filterStyle}>
       <label htmlFor={label}>{label}: </label>
-      <select name={label} onChange={onChange}>
+      <select name={label} onChange={onChange} defaultValue={'DEFAULT'}>
+        <option value={"DEFAULT"} disabled>Select option</option>
         {data.map((item) => {
           return (
             <option value={item} key={item}>

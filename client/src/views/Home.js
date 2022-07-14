@@ -6,9 +6,9 @@ import SearchInput from "../components/SearchInput";
 import Loading from "../components/Loading";
 import { groupByDate } from "../helpers/groupByDate";
 import Filter from "../components/Filter";
-import { MdOutlineCancel } from "react-icons/md";
-import { GrFormClose } from "react-icons/gr";
 import debounce from "lodash.debounce";
+import FilterLabel from "../components/FilterLabel";
+import { localeCompare } from "../helpers/localCompare";
 
 const Home = () => {
   const { error, loading, data } = useQuery(LOAD_USERS);
@@ -41,20 +41,6 @@ const Home = () => {
 
   const isEmpty = Object.values(filter).every((x) => x === null || x === "");
 
-  const renderFilteringByTag = () => {
-    if (isEmpty) {
-      return " ";
-    } else {
-      return (
-        <span
-          style={{ fontSize: "12px", fontWeight: "600", marginRight: "10px" }}
-        >
-          Filtered By:
-        </span>
-      );
-    }
-  };
-
   useEffect(() => {
     if (error) {
       alert(error);
@@ -63,10 +49,12 @@ const Home = () => {
     if (data) {
       setUsers(data.getAllUsers);
       setUsersCopy(data.getAllUsers);
-      setAgeOptions([...new Set(data.getAllUsers.map((item) => item.age))]);
-      setHeightOptions([
-        ...new Set(data.getAllUsers.map((item) => item.height)),
-      ]);
+      setAgeOptions(
+        [...new Set(data.getAllUsers.map((item) => item.age))].sort(localeCompare)
+      );
+      setHeightOptions(
+        [...new Set(data.getAllUsers.map((item) => item.height))].sort(localeCompare)
+      );
     }
   }, [data, error]);
 
@@ -119,44 +107,27 @@ const Home = () => {
             />
           </div>
 
-          <small>
-            {renderFilteringByTag()}
-            {Object.values(filter).map(
-              (filter) =>
-                filter && (
-                  <span style={FilterButtonStyles}>
-                    {filter}
-                    <span
-                      style={singleCancelButtonStyles}
-                      onClick={() => removeSpecificFilters(filter)}
-                    >
-                      <GrFormClose size={18} />
-                    </span>
-                  </span>
-                )
-            )}
-            {!isEmpty && (
-              <span onClick={removeAllFilters} style={closeAllStyles}>
-                <MdOutlineCancel />
-              </span>
-            )}
-          </small>
-          <>
-            {users.length ? (
-              <div>
-                {groupByDate(users).map((val, index) => (
-                  <div key={index}>
-                    <div style={dateStyles}>{val.date}</div>
-                    {val.items.map((item) => {
-                      return <UserCard val={item} key={item.id} />;
-                    })}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div style={noDataStyles}>No data</div>
-            )}
-          </>
+          <FilterLabel
+            isEmpty={isEmpty}
+            filter={filter}
+            removeSpecificFilters={removeSpecificFilters}
+            removeAllFilters={removeAllFilters}
+          />
+
+          {users.length ? (
+            <div>
+              {groupByDate(users).map((val, index) => (
+                <div key={index}>
+                  <div style={dateStyles}>{val.date}</div>
+                  {val.items.map((item) => {
+                    return <UserCard val={item} key={item.id} />;
+                  })}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={noDataStyles}>No data</div>
+          )}
         </div>
       )}
     </>
@@ -184,30 +155,4 @@ const selectDivStyles = {
   flexDirection: "row",
   width: "50%",
   margin: "0 auto",
-};
-
-const FilterButtonStyles = {
-  padding: "2px 10px",
-  paddingRight: "0",
-  color: "#333",
-  backgroundColor: "#ddd",
-  border: "none",
-  borderRadius: "4px",
-  fontSize: "14px",
-  marginRight: "3px",
-  display: "inline-flex",
-  alignItems: "center",
-};
-
-const singleCancelButtonStyles = {
-  padding: "0 2px 2px",
-  margin: "0",
-  cursor: "pointer",
-};
-
-const closeAllStyles = {
-  color: "#777",
-  fontSize: "17px",
-  marginLeft: "10px",
-  cursor: "pointer",
 };
