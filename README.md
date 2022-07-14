@@ -3,8 +3,4 @@
 Frontend - React
 Backend - Graphql
 
-I decided to create my own graphql mock up api. to run it install dependencies using 'npm install' and 'npm run start' to start the server. I created my graphql 
-connections inside the app.js and graphql folder inside src to define fields. A few libraries i used react-icons, lodash.debounce, framer-motion. I created my
-components and view folder. The app was broken down into components with each individual component in the components folder. i created a helper folder and functions 
-i intend to reuse where placed there. I made a copy of data which was then used for filter and search. Edge cases like filter by two parameters and searching through
-filter list was taken care of. The experience is smooth and fast however if i was to improve on it i would improve on the UI.
+I made the decision to build my own mock graphql api. Utilizing 'npm install' and 'npm run start' to start the server, dependencies are installed. I built my graphql connections within the application. fields are defined in the Queries.js in the graphql folders inside of src. I utilized a few libraries, including framer-motion, lodash.debounce, and react-icons. My components and view folder were generated. The app was divided into components, each of which was stored in the components folder. I made a helper folder and put the functions I wanted to reuse inside. Upon successful connection to the api the data is displyed in cards. I made a copy of the data, which was subsequently put to use for filtering and searching. Edge cases like searching over the filtered list and filtering by two parameters were addressed. Although the experience is quick and easy, I would like to see the UI improved.
